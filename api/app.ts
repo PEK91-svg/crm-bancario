@@ -13,6 +13,7 @@ import { errorHandler } from './middleware/errorHandler';
 import { clerkAuth } from './middleware/auth';
 import { auditMiddleware } from './middleware/audit';
 import { securityHeaders, requestId, rateLimit } from './middleware/security';
+import { devAuth } from './middleware/devAuth';
 
 // Routes
 import accountsRoutes from './routes/accounts';
@@ -56,6 +57,9 @@ app.get('/health', (c) => {
         environment: process.env.NODE_ENV,
     });
 });
+
+// Dev auth bypass for mock-token (must be before clerkAuth)
+app.use('/api/*', devAuth);
 
 // Auth middleware for all /api routes
 app.use('/api/*', clerkAuth);

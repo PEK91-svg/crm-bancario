@@ -19,6 +19,14 @@ const clerkClient = createClerkClient({
  */
 export const clerkAuth = async (c: Context, next: Next) => {
     try {
+        // If user is already set (e.g., by devAuth), skip authentication
+        const existingUser = c.get('user');
+        if (existingUser) {
+            console.log('🔓 User already authenticated (devAuth), skipping clerkAuth');
+            await next();
+            return;
+        }
+
         // Extract token from Authorization header
         const authHeader = c.req.header('Authorization');
 

@@ -29,6 +29,8 @@ export async function devAuth(c: Context, next: Next) {
         };
 
         c.set('user', mockUser);
+        c.set('userId', mockUser.id);
+        c.set('permissions', mockUser.permissions);
         console.log('🔓 Dev mode: Mock admin user authenticated');
     }
 

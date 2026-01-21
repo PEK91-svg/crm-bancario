@@ -11,10 +11,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 import Link from "next/link"
 
 export default function CustomersPage() {
-    const { data: contacts, isLoading } = useQuery({
+    const { data: contactsRes, isLoading } = useQuery({
         queryKey: ['contacts'],
-        queryFn: () => api.get('contacts').json<any[]>()
+        queryFn: () => api.get('contacts').json<{ data: any[] }>()
     })
+
+    const contacts = contactsRes?.data || [];
 
     return (
         <div className="space-y-6">
@@ -73,24 +75,24 @@ export default function CustomersPage() {
                                                 </span>
                                             </div>
                                             <div>
-                                                <div className="font-medium text-white group-hover:text-emerald-400 transition-colors">
+                                                <div className="font-bold text-emerald-400 text-base hover:text-emerald-300 transition-colors">
                                                     <Link href={`/customers/${contact.id}`} className="hover:underline">
                                                         {contact.firstName} {contact.lastName}
                                                     </Link>
                                                 </div>
-                                                <div className="text-xs text-muted-foreground">{contact.email}</div>
+                                                <div className="text-sm text-gray-300 font-medium">{contact.email}</div>
                                             </div>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-medium">
                                             Active
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground text-sm">
+                                    <TableCell className="text-gray-200 font-medium text-sm">
                                         {contact.phone || 'N/A'}
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground text-sm">
+                                    <TableCell className="text-gray-400 text-sm">
                                         2 ore fa
                                     </TableCell>
                                     <TableCell className="text-right">

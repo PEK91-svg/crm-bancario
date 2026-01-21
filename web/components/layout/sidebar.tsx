@@ -8,9 +8,12 @@ import {
     Users,
     MessageSquare,
     Briefcase,
-    Settings,
     BarChart3,
-    Globe
+    Globe,
+    Building2,
+    AlertCircle,
+    Target,
+    Settings
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -18,6 +21,9 @@ import { cn } from "@/lib/utils"
 const navItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/customers", icon: Users, label: "Clienti" },
+    { href: "/accounts", icon: Building2, label: "Conti" },
+    { href: "/projects", icon: Target, label: "Progetti" },
+    { href: "/cases", icon: AlertCircle, label: "Supporto" },
     { href: "/communications", icon: MessageSquare, label: "Comunicazioni" },
     { href: "/journeys", icon: Globe, label: "Marketing" },
     { href: "/pratiche", icon: Briefcase, label: "Pratiche" },
@@ -54,8 +60,8 @@ export function Sidebar() {
                             className={cn(
                                 "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all relative overflow-hidden",
                                 isActive
-                                    ? "text-white shadow-lg shadow-primary/20 backdrop-blur-md bg-gradient-to-r from-primary/20 to-transparent border border-primary/20"
-                                    : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                                    ? "text-white shadow-lg shadow-primary/20 backdrop-blur-md bg-white/10 border border-white/20"
+                                    : "text-gray-300 hover:bg-white/10 hover:text-white"
                             )}
                         >
                             {isActive && (

@@ -43,7 +43,7 @@ export function ContactForm({ accountId, onSuccess, onCancel }: ContactFormProps
     const router = useRouter()
     const queryClient = useQueryClient()
 
-    const form = useForm<ContactFormValues>({
+    const form = useForm({
         resolver: zodResolver(contactFormSchema),
         defaultValues: {
             firstName: "",

@@ -9,10 +9,12 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function PratichePage() {
-    const { data: pratiche, isLoading } = useQuery({
+    const { data: praticheRes, isLoading } = useQuery({
         queryKey: ['pratiche'],
-        queryFn: () => api.get('pratiche').json<any[]>()
+        queryFn: () => api.get('pratiche').json<{ data: any[] }>()
     })
+
+    const pratiche = praticheRes?.data || [];
 
     const statusColors: any = {
         pending: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
@@ -46,12 +48,12 @@ export default function PratichePage() {
                                     <Badge variant="outline" className={statusColors[pratica.status] || ''}>
                                         {pratica.status?.replace('_', ' ')}
                                     </Badge>
-                                    <span className="text-xs text-muted-foreground font-mono">#{pratica.praticaNumber}</span>
+                                    <span className="text-xs text-purple-200 font-mono font-medium">#{pratica.praticaNumber}</span>
                                 </div>
-                                <CardTitle className="text-lg text-white">
+                                <CardTitle className="text-lg text-purple-400 font-bold">
                                     {pratica.type === 'apertura_conto' ? 'Apertura Conto' : pratica.type}
                                 </CardTitle>
-                                <CardDescription>
+                                <CardDescription className="text-gray-200 font-medium">
                                     {pratica.contact?.firstName} {pratica.contact?.lastName}
                                 </CardDescription>
                             </CardHeader>
@@ -59,8 +61,8 @@ export default function PratichePage() {
                                 <div className="space-y-4">
                                     <div className="flex flex-col gap-2">
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Step Corrente</span>
-                                            <span className="text-white font-medium">{pratica.currentStep || 'Inizializzazione'}</span>
+                                            <span className="text-gray-300 font-medium">Step Corrente</span>
+                                            <span className="text-white font-bold">{pratica.currentStep || 'Inizializzazione'}</span>
                                         </div>
                                         {/* Progress Bar */}
                                         <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
@@ -68,7 +70,7 @@ export default function PratichePage() {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs text-muted-foreground">
+                                    <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs text-purple-200/80 font-medium">
                                         <div className="flex items-center gap-1">
                                             <Clock className="h-3 w-3" /> Due {new Date(pratica.dueDate).toLocaleDateString()}
                                         </div>

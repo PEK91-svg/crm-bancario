@@ -13,26 +13,30 @@ export default function CommunicationsPage() {
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
     // Fetch calls, emails, chats in parallel
-    const { data: calls, isLoading: loadingCalls } = useQuery({
+    const { data: callsRes, isLoading: loadingCalls } = useQuery({
         queryKey: ['communications', 'calls'],
-        queryFn: () => api.get('communications/calls').json<any[]>()
+        queryFn: () => api.get('communications/calls').json<{ data: any[] }>()
     })
 
-    const { data: emails, isLoading: loadingEmails } = useQuery({
+    const { data: emailsRes, isLoading: loadingEmails } = useQuery({
         queryKey: ['communications', 'emails'],
-        queryFn: () => api.get('communications/emails').json<any[]>()
+        queryFn: () => api.get('communications/emails').json<{ data: any[] }>()
     })
 
-    const { data: chats, isLoading: loadingChats } = useQuery({
+    const { data: chatsRes, isLoading: loadingChats } = useQuery({
         queryKey: ['communications', 'chats'],
-        queryFn: () => api.get('communications/chats').json<any[]>()
+        queryFn: () => api.get('communications/chats').json<{ data: any[] }>()
     })
+
+    const calls = callsRes?.data || [];
+    const emails = emailsRes?.data || [];
+    const chats = chatsRes?.data || [];
 
     // Normalize data for list view (mock normalization - normally backend returns unified or we map here)
     const allCommunications = [
-        ...(calls || []).map(c => ({ ...c, type: 'call' })),
-        ...(emails || []).map(e => ({ ...e, type: 'email' })),
-        ...(chats || []).map(c => ({ ...c, type: 'chat' }))
+        ...(calls).map(c => ({ ...c, type: 'call' })),
+        ...(emails).map(e => ({ ...e, type: 'email' })),
+        ...(chats).map(c => ({ ...c, type: 'chat' }))
     ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
     const isLoading = loadingCalls || loadingEmails || loadingChats

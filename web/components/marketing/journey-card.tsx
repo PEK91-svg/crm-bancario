@@ -17,19 +17,19 @@ export function JourneyCard({ journey }: { journey: any }) {
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
                 </div>
-                <CardTitle className="mt-2 text-xl group-hover:text-cyan-400 transition-colors">{journey.name}</CardTitle>
-                <CardDescription className="line-clamp-2 mt-1">
+                <CardTitle className="mt-2 text-xl text-cyan-400 hover:text-cyan-300 transition-colors font-bold">{journey.name}</CardTitle>
+                <CardDescription className="line-clamp-2 mt-1 text-gray-300 font-medium h-10">
                     {journey.description || 'No description provided.'}
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-3">
                 <div className="grid grid-cols-2 gap-4 py-4 border-t border-b border-white/5 my-2">
                     <div className="flex flex-col">
-                        <span className="text-xs text-muted-foreground flex items-center gap-1"><Users className="h-3 w-3" /> Enrolled</span>
+                        <span className="text-xs text-cyan-200/80 font-medium flex items-center gap-1"><Users className="h-3 w-3" /> Enrolled</span>
                         <span className="text-xl font-bold text-white mt-1">{journey.totalEnrollments || 0}</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-xs text-muted-foreground flex items-center gap-1"><BarChart2 className="h-3 w-3" /> Conversion</span>
+                        <span className="text-xs text-cyan-200/80 font-medium flex items-center gap-1"><BarChart2 className="h-3 w-3" /> Conversion</span>
                         <span className="text-xl font-bold text-white mt-1">{journey.conversionRate || '0%'}</span>
                     </div>
                 </div>

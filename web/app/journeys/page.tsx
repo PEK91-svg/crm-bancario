@@ -8,10 +8,12 @@ import { Plus, Rocket } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function JourneysPage() {
-    const { data: journeys, isLoading } = useQuery({
+    const { data: journeysRes, isLoading } = useQuery({
         queryKey: ['journeys'],
-        queryFn: () => api.get('journeys').json<any[]>()
+        queryFn: () => api.get('journeys').json<{ data: any[] }>()
     })
+
+    const journeys = journeysRes?.data || [];
 
     return (
         <div className="space-y-6">

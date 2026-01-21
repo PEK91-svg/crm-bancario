@@ -41,21 +41,21 @@ export function CommunicationList({ items, onSelect, selectedId, filter }: Commu
 
                     <div className="flex-1 overflow-hidden">
                         <div className="flex items-center justify-between mb-1">
-                            <span className={cn("font-medium truncate", selectedId === item.id ? "text-primary" : "text-white")}>
+                            <span className={cn("font-bold truncate", selectedId === item.id ? "text-primary" : "text-blue-300")}>
                                 {item.contact?.firstName || 'Unknown'} {item.contact?.lastName || 'Contact'}
                             </span>
-                            <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
+                            <span className="text-xs text-gray-400 font-medium shrink-0 tabular-nums">
                                 {item.createdAt ? formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: it }) : 'Just now'}
                             </span>
                         </div>
 
-                        <p className="text-xs text-muted-foreground truncate flex items-center gap-1">
+                        <p className="text-xs text-blue-100/70 font-medium truncate flex items-center gap-1">
                             {item.direction === 'inbound' ? <ArrowDownLeft className="h-3 w-3 text-green-400" /> : <ArrowUpRight className="h-3 w-3 text-blue-400" />}
                             {item.status || item.subject || 'No details'}
                         </p>
 
                         {(item.notes || item.body || item.lastMessage) && (
-                            <p className="text-xs text-muted-foreground/60 truncate mt-1">
+                            <p className="text-xs text-gray-400 truncate mt-1">
                                 {item.notes || item.body || item.lastMessage}
                             </p>
                         )}

@@ -23,10 +23,11 @@ export default function CustomerDetailPage() {
         queryFn: () => api.get(`contacts/${id}`).json<any>()
     })
 
-    const { data: accounts } = useQuery({
+    const { data: accountsRes } = useQuery({
         queryKey: ['accounts', id],
-        queryFn: () => api.get(`accounts?contactId=${id}`).json<any[]>()
+        queryFn: () => api.get(`accounts?contactId=${id}`).json<{ data: any[] }>()
     })
+    const accounts = accountsRes?.data || [];
 
     if (isLoading) return <CustomerSkeleton />
 

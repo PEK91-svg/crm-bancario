@@ -14,6 +14,7 @@ import {
 } from '../schemas/accounts.schema';
 import { requirePermission } from '../middleware/rbac';
 import { NotFoundError } from '../middleware/errorHandler';
+import { logAudit } from '../middleware/audit';
 
 const app = new Hono();
 
@@ -201,5 +202,47 @@ app.get('/:id/cases', requirePermission('cases:read'), async (c) => {
 
     return c.json({ data: accountCases });
 });
+
+/**
+ * DELETE /accounts/:id
+ * Soft delete an account (set isActive = false)
+ */
+app.delete(
+    '/:id',
+    requirePermission('accounts:write'),
+    async (c) => {
+        const id = c.req.param('id');
+        const user = c.get('user');
+
+        const existing = await db.query.accounts.findFirst({
+            where: eq(accounts.id, id),
+        });
+
+        if (!existing) {
+            throw new NotFoundError('Account not found');
+        }
+
+        const [deleted] = await db
+            .update(accounts)
+            .set({
+                isActive: false,
+                updatedAt: new Date()
+            })
+            .where(eq(accounts.id, id))
+            .returning();
+
+        // Log deletion
+        await logAudit({
+            userId: user.id,
+            userEmail: user.email,
+            action: 'delete',
+            entityType: 'account',
+            entityId: id,
+            metadata: { softDelete: true }
+        });
+
+        return c.json({ message: 'Account deleted successfully', id: deleted.id });
+    }
+);
 
 export default app;

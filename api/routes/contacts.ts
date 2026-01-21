@@ -316,4 +316,46 @@ app.patch(
     }
 );
 
+/**
+ * DELETE /contacts/:id
+ * Soft delete a contact (set isActive = false)
+ */
+app.delete(
+    '/:id',
+    requirePermission('contacts:write'),
+    async (c) => {
+        const id = c.req.param('id');
+        const user = c.get('user');
+
+        const existing = await db.query.contacts.findFirst({
+            where: eq(contacts.id, id),
+        });
+
+        if (!existing) {
+            throw new NotFoundError('Contact not found');
+        }
+
+        const [deleted] = await db
+            .update(contacts)
+            .set({
+                isActive: false,
+                updatedAt: new Date()
+            })
+            .where(eq(contacts.id, id))
+            .returning();
+
+        // Log deletion
+        await logAudit({
+            userId: user.id,
+            userEmail: user.email,
+            action: 'delete',
+            entityType: 'contact',
+            entityId: id,
+            metadata: { softDelete: true }
+        });
+
+        return c.json({ message: 'Contact deleted successfully', id: deleted.id });
+    }
+);
+
 export default app;

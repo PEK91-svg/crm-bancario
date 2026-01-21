@@ -17,6 +17,7 @@ import {
 } from '../schemas/cases.schema';
 import { requirePermission, requireAnyPermission } from '../middleware/rbac';
 import { NotFoundError } from '../middleware/errorHandler';
+import { logAudit } from '../middleware/audit';
 
 const app = new Hono();
 
@@ -333,6 +334,48 @@ app.post(
             .returning();
 
         return c.json(updated);
+    }
+);
+
+/**
+ * DELETE /cases/:id
+ * Soft delete a case (set isActive = false)
+ */
+app.delete(
+    '/:id',
+    requirePermission('cases:write'),
+    async (c) => {
+        const id = c.req.param('id');
+        const user = c.get('user');
+
+        const existing = await db.query.cases.findFirst({
+            where: eq(cases.id, id),
+        });
+
+        if (!existing) {
+            throw new NotFoundError('Case not found');
+        }
+
+        const [deleted] = await db
+            .update(cases)
+            .set({
+                isActive: false,
+                updatedAt: new Date()
+            })
+            .where(eq(cases.id, id))
+            .returning();
+
+        // Log deletion
+        await logAudit({
+            userId: user.id,
+            userEmail: user.email,
+            action: 'delete',
+            entityType: 'case',
+            entityId: id,
+            metadata: { softDelete: true }
+        });
+
+        return c.json({ message: 'Case deleted successfully', id: deleted.id });
     }
 );
 

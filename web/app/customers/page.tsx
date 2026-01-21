@@ -23,9 +23,11 @@ export default function CustomersPage() {
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Clienti</h1>
                     <p className="text-muted-foreground mt-1">Gestione portafoglio clienti e prospect</p>
                 </div>
-                <Button className="gap-2 bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-lg shadow-emerald-500/25">
-                    <Plus className="h-4 w-4" /> Nuovo Cliente
-                </Button>
+                <Link href="/customers/new">
+                    <Button className="gap-2 bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-lg shadow-emerald-500/25">
+                        <Plus className="h-4 w-4" /> Nuovo Cliente
+                    </Button>
+                </Link>
             </div>
 
             {/* Filters Bar */}

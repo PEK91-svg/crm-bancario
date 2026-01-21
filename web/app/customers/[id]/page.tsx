@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useParams } from "next/navigation"
+import { DeleteButton } from "@/components/shared/DeleteButton"
 
 export default function CustomerDetailPage() {
     const { id } = useParams()
@@ -74,6 +75,12 @@ export default function CustomerDetailPage() {
                     <div className="flex flex-col gap-2 min-w-[150px]">
                         <Button className="w-full bg-cyan-600 hover:bg-cyan-500">Contact</Button>
                         <Button variant="outline" className="w-full">Edit Profile</Button>
+                        <DeleteButton
+                            entityType="contact"
+                            entityId={id as string}
+                            entityName={`${customer?.firstName} ${customer?.lastName}`}
+                            redirectTo="/customers"
+                        />
                     </div>
                 </div>
             </div>

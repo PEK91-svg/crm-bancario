@@ -16,6 +16,7 @@ import {
 } from '../schemas/pratiche.schema';
 import { requirePermission, requireAnyPermission } from '../middleware/rbac';
 import { NotFoundError } from '../middleware/errorHandler';
+import { logAudit } from '../middleware/audit';
 
 const app = new Hono();
 
@@ -306,6 +307,48 @@ app.post(
             .returning();
 
         return c.json(updated);
+    }
+);
+
+/**
+ * DELETE /pratiche/:id
+ * Soft delete a pratica (set isActive = false)
+ */
+app.delete(
+    '/:id',
+    requirePermission('pratiche:write'),
+    async (c) => {
+        const id = c.req.param('id');
+        const user = c.get('user');
+
+        const existing = await db.query.praticheOnboarding.findFirst({
+            where: eq(praticheOnboarding.id, id),
+        });
+
+        if (!existing) {
+            throw new NotFoundError('Pratica not found');
+        }
+
+        const [deleted] = await db
+            .update(praticheOnboarding)
+            .set({
+                isActive: false,
+                updatedAt: new Date()
+            })
+            .where(eq(praticheOnboarding.id, id))
+            .returning();
+
+        // Log deletion
+        await logAudit({
+            userId: user.id,
+            userEmail: user.email,
+            action: 'delete',
+            entityType: 'pratica',
+            entityId: id,
+            metadata: { softDelete: true }
+        });
+
+        return c.json({ message: 'Pratica deleted successfully', id: deleted.id });
     }
 );
 

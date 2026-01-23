@@ -26,6 +26,7 @@ import adminRoutes from './routes/admin';
 import analyticsRoutes from './routes/analytics';
 import searchRoutes from './routes/search';
 import gdprRoutes from './routes/gdpr';
+import marketingRoutes from './routes/marketing';
 
 // Types
 type Variables = {
@@ -80,6 +81,7 @@ api.route('/admin', adminRoutes);
 api.route('/analytics', analyticsRoutes);
 api.route('/search', searchRoutes);
 api.route('/gdpr', gdprRoutes);
+api.route('/marketing', marketingRoutes);
 
 // 404 handler
 app.notFound((c) => {

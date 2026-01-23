@@ -25,7 +25,7 @@ const navItems = [
     { href: "/projects", icon: Target, label: "Progetti" },
     { href: "/cases", icon: AlertCircle, label: "Supporto" },
     { href: "/communications", icon: MessageSquare, label: "Comunicazioni" },
-    { href: "/journeys", icon: Globe, label: "Marketing" },
+    { href: "/marketing", icon: Globe, label: "Marketing" },
     { href: "/pratiche", icon: Briefcase, label: "Pratiche" },
     { href: "/analytics", icon: BarChart3, label: "Analytics" },
     { href: "/settings", icon: Settings, label: "Impostazioni" },

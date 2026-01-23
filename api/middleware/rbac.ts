@@ -24,6 +24,10 @@ export type Permission =
     | 'accounts:read'
     | 'accounts:write'
     | 'accounts:delete'
+    // Products (Conti, Cards, Linee Libere, illimity Connect)
+    | 'products:read'
+    | 'products:write'
+    | 'products:delete'
     // Pratiche
     | 'pratiche:read'
     | 'pratiche:write'
@@ -53,6 +57,7 @@ export const DEFAULT_ROLES = {
         'cases:read', 'cases:write', 'cases:assign', 'cases:escalate',
         'contacts:read', 'contacts:write', 'contacts:export',
         'accounts:read', 'accounts:write',
+        'products:read', 'products:write',
         'pratiche:read', 'pratiche:write',
         'reports:view', 'reports:export',
     ] as Permission[],
@@ -61,11 +66,13 @@ export const DEFAULT_ROLES = {
         'cases:read', 'cases:write',
         'contacts:read', 'contacts:write',
         'accounts:read',
+        'products:read',
     ] as Permission[],
 
     backoffice: [
         'pratiche:read', 'pratiche:write', 'pratiche:approve', 'pratiche:reject',
         'accounts:read', 'accounts:write',
+        'products:read', 'products:write',
         'contacts:read', 'contacts:write',
     ] as Permission[],
 
@@ -79,6 +86,7 @@ export const DEFAULT_ROLES = {
         'cases:read',
         'contacts:read',
         'accounts:read',
+        'products:read',
         'pratiche:read',
         'journeys:read',
         'reports:view',

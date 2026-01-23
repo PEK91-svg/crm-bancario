@@ -26,6 +26,10 @@ import adminRoutes from './routes/admin';
 import analyticsRoutes from './routes/analytics';
 import searchRoutes from './routes/search';
 import gdprRoutes from './routes/gdpr';
+import contiCorrentiRoutes from './routes/conti-correnti';
+import cardsRoutes from './routes/cards';
+import lineeLibereRoutes from './routes/linee-libere';
+import illimityConnectRoutes from './routes/illimity-connect';
 
 // Types
 type Variables = {
@@ -80,6 +84,10 @@ api.route('/admin', adminRoutes);
 api.route('/analytics', analyticsRoutes);
 api.route('/search', searchRoutes);
 api.route('/gdpr', gdprRoutes);
+api.route('/conti-correnti', contiCorrentiRoutes);
+api.route('/cards', cardsRoutes);
+api.route('/linee-libere', lineeLibereRoutes);
+api.route('/illimity-connect', illimityConnectRoutes);
 
 // 404 handler
 app.notFound((c) => {

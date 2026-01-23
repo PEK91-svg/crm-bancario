@@ -11,6 +11,7 @@ export * from './accounts';
 
 // Banking Products
 export * from './banking';
+export * from './products';
 
 // Customer Service
 export * from './cases';

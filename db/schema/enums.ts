@@ -55,6 +55,47 @@ export const contoStatusEnum = pgEnum('conto_status', [
     'closed',
 ]);
 
+// Cards
+export const cardTypeEnum = pgEnum('card_type', [
+    'credito',
+    'debito',
+    'prepagata',
+    'american_express',
+]);
+
+export const cardStatusEnum = pgEnum('card_status', [
+    'active',
+    'blocked',
+    'expired',
+    'cancelled',
+    'pending_activation',
+]);
+
+export const cardCircuitEnum = pgEnum('card_circuit', [
+    'visa',
+    'mastercard',
+    'american_express',
+    'maestro',
+    'vpay',
+    'bancomat',
+]);
+
+// Linee Libere (Credit Lines)
+export const lineaLiberaStatusEnum = pgEnum('linea_libera_status', [
+    'active',
+    'suspended',
+    'revoked',
+    'closed',
+]);
+
+// illimity Connect
+export const illimityConnectStatusEnum = pgEnum('illimity_connect_status', [
+    'active',
+    'pending',
+    'suspended',
+    'closed',
+]);
+
 export const progettoStatusEnum = pgEnum('progetto_status', [
     'draft',
     'active',

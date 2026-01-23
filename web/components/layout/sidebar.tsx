@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
 import {
     LayoutDashboard,
     Users,
@@ -13,7 +14,16 @@ import {
     Building2,
     AlertCircle,
     Target,
-    Settings
+    Settings,
+    Package,
+    Landmark,
+    PiggyBank,
+    CreditCard,
+    Wallet,
+    TrendingUp,
+    Zap,
+    FileEdit,
+    ChevronDown,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -31,8 +41,21 @@ const navItems = [
     { href: "/settings", icon: Settings, label: "Impostazioni" },
 ]
 
+const productItems = [
+    { href: "/prodotti/conti-correnti", icon: Landmark, label: "Conti Correnti" },
+    { href: "/prodotti/conti-deposito", icon: PiggyBank, label: "Conti Deposito" },
+    { href: "/prodotti/carte-credito", icon: CreditCard, label: "Carte di Credito" },
+    { href: "/prodotti/carte-debito", icon: CreditCard, label: "Carte di Debito" },
+    { href: "/prodotti/carte-prepagate", icon: Wallet, label: "Carte Prepagate" },
+    { href: "/prodotti/american-express", icon: CreditCard, label: "American Express" },
+    { href: "/prodotti/linee-libere", icon: TrendingUp, label: "Linee Libere" },
+    { href: "/prodotti/illimity-connect", icon: Zap, label: "illimity Connect" },
+    { href: "/prodotti/modifiche-massive", icon: FileEdit, label: "Modifiche Massive" },
+]
+
 export function Sidebar() {
     const pathname = usePathname()
+    const [productsOpen, setProductsOpen] = useState(pathname.startsWith('/prodotti'))
 
     return (
         <motion.aside
@@ -49,7 +72,7 @@ export function Sidebar() {
                 </Link>
             </div>
 
-            <nav className="space-y-1 p-4 mt-4">
+            <nav className="space-y-1 p-4 mt-4 overflow-y-auto max-h-[calc(100vh-180px)]">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href
 
@@ -78,6 +101,57 @@ export function Sidebar() {
                         </Link>
                     )
                 })}
+
+                {/* Gestione Prodotti Section */}
+                <div className="pt-3 mt-3 border-t border-white/5">
+                    <button
+                        onClick={() => setProductsOpen(!productsOpen)}
+                        className={cn(
+                            "w-full group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
+                            pathname.startsWith('/prodotti')
+                                ? "text-white bg-white/5"
+                                : "text-gray-300 hover:bg-white/10 hover:text-white"
+                        )}
+                    >
+                        <Package className={cn("h-5 w-5 transition-colors", pathname.startsWith('/prodotti') ? "text-cyan-400" : "group-hover:text-cyan-400/80")} />
+                        <span className="flex-1 text-left">Gestione Prodotti</span>
+                        <ChevronDown className={cn("h-4 w-4 transition-transform", productsOpen && "rotate-180")} />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                        {productsOpen && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="ml-4 mt-1 space-y-0.5 border-l border-white/10 pl-3">
+                                    {productItems.map((item) => {
+                                        const isActive = pathname === item.href
+
+                                        return (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className={cn(
+                                                    "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-xs font-medium transition-all",
+                                                    isActive
+                                                        ? "text-white bg-white/10 border border-white/15"
+                                                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                                                )}
+                                            >
+                                                <item.icon className={cn("h-4 w-4 transition-colors flex-shrink-0", isActive ? "text-cyan-400" : "group-hover:text-cyan-400/80")} />
+                                                <span className="truncate">{item.label}</span>
+                                            </Link>
+                                        )
+                                    })}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
             </nav>
 
             {/* User Info Card at Bottom */}
